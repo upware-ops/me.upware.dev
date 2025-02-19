@@ -1,16 +1,25 @@
 {
-  "$schema": "https://railway.app/railway.schema.json",
+  "$schema": "https://railway.com/railway.schema.json",
   "build": {
-    "builder": "NIXPACKS",
-    "buildEnvironment": null,
-    "dockerfilePath": "www/Dockerfile"
+    "builder": "DOCKERFILE",
+    "dockerfilePath": ".docker/images/web/build.docker"
   },
   "deploy": {
     "runtime": "V2",
     "numReplicas": 1,
-    "sleepApplication": false,
+    "limitOverride": {
+      "containers": {
+        "cpu": 0.5,
+        "memoryBytes": 500000000
+      }
+    },
+    "sleepApplication": true,
+    "multiRegionConfig": {
+      "europe-west4-drams3a": {
+        "numReplicas": 1
+      }
+    },
     "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 3,
-    "region": "europe-west4"
+    "restartPolicyMaxRetries": 3
   }
 }
